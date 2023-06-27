@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.unitconverterapp.compose.converter.BaseScreen
+import com.example.unitconverterapp.compose.BaseScreen
 import com.example.unitconverterapp.data.ConvertDataBase
 import com.example.unitconverterapp.data.ConverterRepositoryImpl
 import com.example.unitconverterapp.ui.theme.UnitConverterAppTheme
