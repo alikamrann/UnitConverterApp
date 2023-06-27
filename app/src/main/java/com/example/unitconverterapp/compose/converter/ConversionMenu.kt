@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -32,11 +33,12 @@ import com.example.unitconverterapp.data.Conversion
 @Composable
 fun ConversionMenu(
     list: List<Conversion>,
+    isLandScape : Boolean,
     modifier: Modifier = Modifier,
     convert: (Conversion) -> Unit
 ) {
 
-    var displayingText by remember { mutableStateOf("Select the convesion type") }
+    var displayingText by rememberSaveable{ mutableStateOf("Select the conversion type") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var expended by remember { mutableStateOf(false) }
 
@@ -45,29 +47,51 @@ fun ConversionMenu(
     else
         Icons.Filled.ArrowDropDown
 
+
+
     Column {
-
-
-        OutlinedTextField(
-            value = displayingText, onValueChange = { displayingText = it },
-            textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-            modifier = modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { cordinates ->
-                    textFieldSize = cordinates.size.toSize()
+        if(isLandScape) {
+            OutlinedTextField(
+                value = displayingText,
+                onValueChange = { displayingText = it },
+                textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                modifier = modifier
+                    .onGloballyPositioned { cordinates ->
+                        textFieldSize = cordinates.size.toSize()
+                    },
+                label = { Text(text = "Conversion type") },
+                trailingIcon = {
+                    Icon(icon, contentDescription = "icon",
+                        modifier.clickable { expended = !expended })
                 },
-            label = { Text(text = "Conversion Type") },
-            trailingIcon = {
-                Icon(icon, contentDescription = "icon",
-                    modifier.clickable { expended = !expended })
-            },
-            readOnly = true
+                readOnly = true
+            )
+        } else {
+            OutlinedTextField(
+                value = displayingText,
+                onValueChange = { displayingText = it },
+                textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { cordinates ->
+                        textFieldSize = cordinates.size.toSize()
+                    },
+                label = { Text(text = "Conversion type") },
+                trailingIcon = {
+                    Icon(icon, contentDescription = "icon",
+                        modifier.clickable { expended = !expended })
+                },
+                readOnly = true
+            )
 
-        )
+        }
+
         DropdownMenu(
-            expanded = expended, onDismissRequest = { expended = false },
+            expanded = expended,
+            onDismissRequest = { expended = false },
             modifier = modifier.width(with(LocalDensity.current) { textFieldSize.width.toDp() })
-        ) {
+        )
+        {
             list.forEach { conversion ->
                 DropdownMenuItem(text = {
                     Text(
@@ -80,8 +104,8 @@ fun ConversionMenu(
                     expended = false
                     convert(conversion)
                 })
-
             }
+
         }
     }
 }

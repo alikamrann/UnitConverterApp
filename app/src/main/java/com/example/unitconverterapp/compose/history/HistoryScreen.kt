@@ -28,7 +28,7 @@ fun HistoryScreen(
         if((list.value).isNotEmpty()) {
             Row(
                 modifier = modifier
-                    .fillMaxWidth()
+
                     .padding(bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
